@@ -15,7 +15,7 @@ regions <- unique(messinian_db$region.new)
 group.names <- unique(messinian_db$group.name)
 group.names.ext = c(group.names, "all groups")
 regions.ext = c(regions, "whole basin")
-noOfRep = 100 # number of repetitions for subsampling
+noOfRep = 10000 # number of repetitions for subsampling
 
 for (ti in timebins){
   wMed = get_from_db("all groups", "Western Mediterranean", ti)
