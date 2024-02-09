@@ -31,8 +31,8 @@ for (ti in timebins){
   ylab = paste0("Species richenss \n subsampled to ", subsampleTo, " occurrences")
   pdf(file = file_name)
   boxplot(x = list("wMed" = wMed_sr,
-                   "eMed" = eMed_sr,
-                   "PPOA" = PPNA_sr),
+                   "PPOA" = PPNA_sr,
+                   "eMed" = eMed_sr),
           ylim = ylim,
           ylab = ylab,
           main = main)
