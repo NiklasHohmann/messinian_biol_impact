@@ -77,3 +77,34 @@ rarefyTaxRichness=function(mySample, subsampleTo,noOfRep){
   taxRichness=sapply(seq_len(noOfRep), function(x) length(unique(sample(mySample,size=subsampleTo,replace=FALSE))))
   return(taxRichness)
 }
+
+rarefyEcoIndexes=function(mySample1, mySample2, subsampleTo, noOfRep){
+  #' 
+  #' @title pairwise rarefaction for ecological parameters
+  #' 
+  #' @param mySample1 first vector of taxon names
+  #' @param mySample2 second vector of taxon names
+  #' @param subsampleto target sample size for subsampling.
+  #' @param noOfRep integer, number of subsampling repetitions
+  #' 
+  #' @description
+  #' performs pairwise subsampling from two vectors of taxon names, and returns 
+  #' key ecological indices (soerensen & simpson index, nestedness)
+  #'
+  #' @returns a list with three names elements: "soerensen", "simpson", "nestedness", each a vector of length _noOfRep_, containing the ecological indices of the i-th subsampling run 
+  stopifnot(length(mySample1)>=subsampleTo & length(mySample2)>=subsampleTo)
+  stopifnot(!is.na(c(mySample1,mySample2)))
+  
+  out=list(soerensen=numeric(),simpson=numeric(),nestedness=numeric())
+  for (i in 1:noOfRep){
+    selectedocc1=sample(mySample1,size=subsampleTo,replace=FALSE)
+    selectedocc2=sample(mySample2,size=subsampleTo,replace=FALSE)
+    a=length(intersect(selectedocc1,selectedocc2))
+    b=length(setdiff(selectedocc1,selectedocc2))
+    c=length(setdiff(selectedocc2,selectedocc1))
+    out$soerensen[i]=(b+c)/(2*a+b+c) # Baslega 2010
+    out$simpson[i]=min(c(b,c))/(a+min(c(b,c)))
+    out$nestedness[i]=(b+c)/(2*a+b+c)-(min(c(b,c))/(a+min(c(b,c))))
+  }
+  return(out)
+}
