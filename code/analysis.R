@@ -1,6 +1,9 @@
 #### load data ####
 messinian_db <- read.csv(file = "data/messinianDB.csv")
 
+#### fix seed ####
+set.seed(1)
+
 #### Loading helper function ####
 source("code/helper_functions.R")
 
@@ -48,7 +51,7 @@ for (ti in timebins){
   sr_median_reg["whole basin", ti] = median(tot_sr)
   file_name = paste0("figs/", ti, "_sr.pdf")
   main = paste0("Species richness in ", ti)
-  ylim = c(0, max(max(wMed_sr), max(eMed_sr), max(PPNA_sr)))
+  ylim = c(0, 800) #max(max(wMed_sr), max(eMed_sr), max(PPNA_sr)))
   ylab = paste0("Species richenss \n subsampled to ", subsampleTo, " occurrences")
   pdf(file = file_name)
   boxplot(x = list("wMed" = wMed_sr,
@@ -85,12 +88,13 @@ for (ind in eco_index_names){
 
 
 ## Extract percentages 
-sr_median_reg
-100 *(1 - sr_median_reg["Western Mediterranean","Zanclean"]/sr_median_reg["Eastern Mediterranean","Zanclean"])
-100 *(1 - sr_median_reg["Western Mediterranean","Tortonian"]/sr_median_reg["Eastern Mediterranean","Tortonian"])
-
-
-100 *(1 - sr_median_reg["whole basin","Tortonian"]/sr_median_reg["whole basin","pre-evaporitic Messinian"])
-100 *(1 - sr_median_reg["whole basin","pre-evaporitic Messinian"]/sr_median_reg["whole basin","Zanclean"])
-
-eco_ind_median
+# sr_median_reg
+# 100 *(1 - sr_median_reg["Western Mediterranean","Zanclean"]/sr_median_reg["Eastern Mediterranean","Zanclean"])
+# 100 *(1 - sr_median_reg["Western Mediterranean","Tortonian"]/sr_median_reg["Eastern Mediterranean","Tortonian"])
+# 
+# 
+# 100 *(1 - sr_median_reg["whole basin","Tortonian"]/sr_median_reg["whole basin","pre-evaporitic Messinian"])
+# 100 *(1 - sr_median_reg["whole basin","pre-evaporitic Messinian"]/sr_median_reg["whole basin","Zanclean"])
+# 100 *(1 - sr_median_reg["whole basin","Tortonian"]/sr_median_reg["whole basin","Zanclean"])
+# 
+# eco_ind_median
