@@ -21,6 +21,7 @@ regions.ext = c(regions, "whole basin")
 eco_index_names = c("soerensen", "simpson", "nestedness")
 noOfRep = 10000 # number of repetitions for subsampling
 
+#### Species richness in subregions ####
 ## determine subsampling size for all regions for comparability
 subsampleTo = Inf
 for (ti in timebins){
@@ -33,22 +34,19 @@ for (ti in timebins){
 sr_median_reg = matrix(data = NA,
                        nrow = length(regions.ext),
                        ncol = length(timebins),
-                       dimnames = list("regions" = regions.ext,
+                       dimnames = list("regions" = regions,
                                        "timebin" = timebins))
 
 for (ti in timebins){
   wMed = get_from_db("all groups", "Western Mediterranean", ti)
   eMed = get_from_db("all groups", "Eastern Mediterranean", ti)
   PPNA = get_from_db("all groups", "Po Plain-Northern Adriatic", ti)
-  tot = get_from_db("all groups", "whole basin", ti)
   wMed_sr = rarefyTaxRichness(wMed, subsampleTo, noOfRep)
   eMed_sr = rarefyTaxRichness(eMed, subsampleTo, noOfRep)
   PPNA_sr = rarefyTaxRichness(PPNA, subsampleTo, noOfRep)
-  tot_sr = rarefyTaxRichness(tot, subsampleTo, noOfRep)
   sr_median_reg["Western Mediterranean", ti] = median(wMed_sr)
   sr_median_reg["Eastern Mediterranean", ti] = median(eMed_sr)
   sr_median_reg["Po Plain-Northern Adriatic", ti] = median(PPNA_sr)
-  sr_median_reg["whole basin", ti] = median(tot_sr)
   file_name = paste0("figs/", ti, "_sr.pdf")
   main = paste0("Species richness in ", ti)
   ylim = c(0, 800) #max(max(wMed_sr), max(eMed_sr), max(PPNA_sr)))
@@ -63,6 +61,33 @@ for (ti in timebins){
   dev.off()
   
 }
+
+#### Species richness in the whole basin ####
+# extract species names
+Tor = get_from_db(group = "all groups", basin = "whole basin", timeslice = "Tortonian" )
+Mes = get_from_db(group = "all groups", basin = "whole basin", timeslice = "pre-evaporitic Messinian" )
+Zan = get_from_db(group = "all groups", basin = "whole basin", timeslice = "Zanclean" )
+# define subsampling size (80 % of smallest sample)
+subsampleTo = ceiling(0.8 * (min(c(length(Tor), length(Mes), length(Zan)))))
+# subsample noOfRep times
+Tor_sr = rarefyTaxRichness(mySample = Tor, subsampleTo = subsampleTo, noOfRep = noOfRep)
+Mes_sr = rarefyTaxRichness(mySample = Mes, subsampleTo = subsampleTo, noOfRep = noOfRep)
+Zan_sr = rarefyTaxRichness(mySample = Zan, subsampleTo = subsampleTo, noOfRep = noOfRep)
+sr_median = c("Tor"= median(Tor_sr), "Mes" = median(Mes_sr), "Zan" = median(Zan_sr))
+# make figure
+file_name = paste0("figs/sr_through_time_whole_basin.pdf")
+main = paste0("Species Richness whole basin")
+ylim = c(0, max(c(Tor_sr, Mes_sr, Zan_sr)))
+ylab = paste0("Species richness \n subsampled to ",  subsampleTo, " Occurrences")
+pdf(file = file_name)
+boxplot(list( "Tortonian" = Tor_sr,
+              "Messinian" = Mes_sr,
+              "Zanclean" =  Zan_sr),
+        ylim = ylim,
+        ylab = ylab,
+        main = main)
+dev.off()
+
 
 #### Ecological indices ####
 time_comp_names = c("T vs. M", "M vs. Z", "T vs. Z")
@@ -87,14 +112,37 @@ for (ind in eco_index_names){
 }
 
 
-## Extract percentages 
+#### Extract percentages  ####
+# change in species richness between different time slices
+sr_change_time = matrix(data = NA,
+                        nrow = length(regions.ext),
+                        ncol = length(time_comp_names),
+                        dimnames = list("region" = regions.ext,
+                                        "time_comp" = time_comp_names))
+
+for (reg in regions.ext){
+  sr_change_time[reg, "T vs. M"] = 100 * (1 - sr_median_reg[reg,"Tortonian"]/sr_median_reg[reg,"pre-evaporitic Messinian"])
+  sr_change_time[reg, "M vs. Z"] = 100 * (1 - sr_median_reg[reg,"pre-evaporitic Messinian"]/sr_median_reg[reg,"Zanclean"])
+  sr_change_time[reg, "T vs. Z"] = 100 * (1 - sr_median_reg[reg,"Tortonian"]/sr_median_reg[reg,"Zanclean"])
+}
+
 # sr_median_reg
-# 100 *(1 - sr_median_reg["Western Mediterranean","Zanclean"]/sr_median_reg["Eastern Mediterranean","Zanclean"])
-# 100 *(1 - sr_median_reg["Western Mediterranean","Tortonian"]/sr_median_reg["Eastern Mediterranean","Tortonian"])
-# 
-# 
-# 100 *(1 - sr_median_reg["whole basin","Tortonian"]/sr_median_reg["whole basin","pre-evaporitic Messinian"])
-# 100 *(1 - sr_median_reg["whole basin","pre-evaporitic Messinian"]/sr_median_reg["whole basin","Zanclean"])
-# 100 *(1 - sr_median_reg["whole basin","Tortonian"]/sr_median_reg["whole basin","Zanclean"])
+# change in species richness between different regions
+reg_comp = c("WvsE", "WvsP", "EvsP")
+sr_change_reg = matrix(data = NA,
+                       nrow = length(timebins),
+                       ncol = length(reg_comp),
+                       dimnames = list("timeslice" = timebins,
+                                       "reg_comp" = reg_comp))
+for (ti in timebins){
+  sr_change_reg[ti, "WvsE"] = 100 *(1 - sr_median_reg["Western Mediterranean",ti]/sr_median_reg["Eastern Mediterranean",ti])
+  sr_change_reg[ti, "WvsP"] = 100 *(1 - sr_median_reg["Western Mediterranean",ti]/sr_median_reg["Po Plain-Northern Adriatic",ti])
+  sr_change_reg[ti, "EvsP"] = 100 *(1 - sr_median_reg["Eastern Mediterranean",ti]/sr_median_reg["Po Plain-Northern Adriatic",ti])
+}
+
+sr_change_whole = c("T vs. M" = 100 * (1- sr_median["Tor"]/sr_median["Mes"]),
+                    "M vs. Z" = 100 * (1- sr_median["Mes"]/sr_median["Zan"]),
+                    "T vs. Z" = 100 * (1- sr_median["Tor"]/sr_median["Zan"]))
+
 # 
 # eco_ind_median
