@@ -32,7 +32,7 @@ for (ti in timebins){
 }
 
 sr_median_reg = matrix(data = NA,
-                       nrow = length(regions.ext),
+                       nrow = length(regions),
                        ncol = length(timebins),
                        dimnames = list("regions" = regions,
                                        "timebin" = timebins))
@@ -109,6 +109,18 @@ for (ind in eco_index_names){
   eco_ind_median[ind,  "T vs. M"] = 100 * median(TM[[ind]])
   eco_ind_median[ind, "M vs. Z"] = 100 * median(MZ[[ind]])
   eco_ind_median[ind,  "T vs. Z"] = 100 * median(TZ[[ind]])
+  file_name = paste0("figs/", ind,"_whole_basin.pdf")
+  pdf(file = file_name)
+  main = paste0(ind, " for all groups, whole basin")
+  ylab = paste0(ind, "\n subsampled to ",  subsampleTo, " Occurrences")
+  boxplot(list("T vs. M" = TM[[ind]],
+               "M vs. Z" = MZ[[ind]],
+               "T vs. Z" = TZ[[ind]]),
+          ylim = c(0,1),
+          main = main,
+          ylab = ylab,
+          mar = c(5,5,1,1))
+  dev.off()
 }
 
 
@@ -120,8 +132,8 @@ sr_change_time = matrix(data = NA,
                         dimnames = list("region" = regions.ext,
                                         "time_comp" = time_comp_names))
 
-for (reg in regions.ext){
-  sr_change_time[reg, "T vs. M"] = 100 * (1 - sr_median_reg[reg,"Tortonian"]/sr_median_reg[reg,"pre-evaporitic Messinian"])
+for (reg in regions){
+  sr_change_time[reg, "T vs. M"] = 100 * (1 - sr_median_reg["Tortonian"]/sr_median_reg[reg,"pre-evaporitic Messinian"])
   sr_change_time[reg, "M vs. Z"] = 100 * (1 - sr_median_reg[reg,"pre-evaporitic Messinian"]/sr_median_reg[reg,"Zanclean"])
   sr_change_time[reg, "T vs. Z"] = 100 * (1 - sr_median_reg[reg,"Tortonian"]/sr_median_reg[reg,"Zanclean"])
 }
