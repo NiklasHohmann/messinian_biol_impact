@@ -7,6 +7,10 @@ set.seed(1)
 #### Loading helper function ####
 source("code/helper_functions.R")
 
+#### Clean data ####
+remove_occ = grepl("Considered reworked", messinian_db$Notes, useBytes = TRUE) | grepl("Collected from deposits known as \"Livelli ad Aturia", messinian_db$Notes, useBytes = TRUE)
+messinian_db = messinian_db[!remove_occ,]
+
 #### Replace invalid tax names with NA ####
 messinian_db$Species.name = replace(messinian_db$Species.name, messinian_db$Species.name == "sp.", NA)
 messinian_db$Genus.name = replace(messinian_db$Genus.name, messinian_db$Genus.name == "indet.", NA)
