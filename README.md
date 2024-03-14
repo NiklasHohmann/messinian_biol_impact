@@ -1,6 +1,6 @@
 # messinian_biol_impact
 
-Code for _The biological impact of the Mediterranean salt giant_  
+Code for _The biodiversity impact of the Mediterranean salt giant_  
 Project webpage: [REMARE project](https://sites.google.com/view/kagiadi/projects/remare)
 
 ## Authors
