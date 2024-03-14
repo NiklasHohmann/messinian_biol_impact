@@ -17,6 +17,26 @@ email: konstantina.agiadi [at] univie.ac.at
 Web page: [sites.google.com/view/kagiadi](https://sites.google.com/view/kagiadi)  
 ORCID: [0000-0001-8073-559X](https://orcid.org/0000-0001-8073-559X)  
 
+## Requirements
+
+Base R (version >= 4) and the RStudio IDE.
+
+## Reproducing Results
+
+In the RStudio IDE, open the file _messinian_biol_impact.Rproj_. This opens the RProject of the same name, and installs the `renv` package (if not already installed). Then, run
+
+```R
+renv::restore()
+```
+
+in the console to install all dependencies required for the analysis. Next, run
+
+```R
+source("code/download_data.R)
+```
+
+do download the database from Zenodo.
+
 ## License
 
 Apache 2.0, see LICENSE file for full text.
