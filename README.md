@@ -1,5 +1,7 @@
 # messinian_biol_impact
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10817726.svg)](https://doi.org/10.5281/zenodo.10817726)
+
 Supplementary code for _The biodiversity impact of the Mediterranean salt giant_  
 Project webpage: [REMARE project](https://sites.google.com/view/kagiadi/projects/remare)
 
