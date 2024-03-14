@@ -1,13 +1,16 @@
 #### load data ####
+cat("Running analysis, this might take a few minutes\n")
+cat("Loading database\n")
 messinian_db <- read.csv(file = "data/messinianDB.csv")
 
 #### fix seed ####
 set.seed(1)
-
+cat("Sourcing helper functions\n")
 #### Loading helper function ####
 source("code/helper_functions.R")
 
 #### Clean data ####
+cat("Cleaning data\n")
 remove_occ = grepl("Considered reworked", messinian_db$Notes, useBytes = TRUE) | grepl("Collected from deposits known as \"Livelli ad Aturia", messinian_db$Notes, useBytes = TRUE)
 messinian_db = messinian_db[!remove_occ,]
 
@@ -32,6 +35,7 @@ noOfRep = 10000 # number of repetitions for subsampling
 
 #### Species richness in subregions ####
 ## determine subsampling size for all regions for comparability
+cat("Determining species richness in subregions\n")
 subsampleTo = Inf
 for (ti in timebins){
   wMed = get_from_db("all groups", "Western Mediterranean", ti)
@@ -72,6 +76,7 @@ for (ti in timebins){
 }
 
 #### Species richness in the whole basin ####
+cat("Determining species richness in whole basin\n")
 # extract species names
 Tor = get_from_db(group = "all groups", basin = "whole basin", timeslice = "Tortonian" )
 Mes = get_from_db(group = "all groups", basin = "whole basin", timeslice = "pre-evaporitic Messinian" )
@@ -99,6 +104,7 @@ dev.off()
 
 
 #### Ecological indices ####
+cat("Determining ecological indices\n")
 time_comp_names = c("T vs. M", "M vs. Z", "T vs. Z")
 eco_ind_median = matrix(data = NA,
                        nrow = length(eco_index_names),
@@ -134,6 +140,7 @@ for (ind in eco_index_names){
 
 
 #### Extract percentages  ####
+cat("Extracting percentages \n")
 # change in species richness between different time slices
 sr_change_time = matrix(data = NA,
                         nrow = length(regions.ext),
@@ -167,3 +174,6 @@ sr_change_whole = c("T vs. M" = 100 * (1- sr_median["Tor"]/sr_median["Mes"]),
 
 # 
 # eco_ind_median
+
+cat("Done! \n")
+cat("Outputs are in the folder \"figs\" and the variables sr_change_whole, sr_change_reg, sr_change_time, and eco_ind_median.")
