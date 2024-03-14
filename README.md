@@ -35,7 +35,29 @@ in the console to install all dependencies required for the analysis. Next, run
 source("code/download_data.R)
 ```
 
-do download the database from Zenodo.
+do download the database from Zenodo. Then, run
+
+```R
+source("code/analysis.R)
+```
+
+to run the analysis and produce the figures. This will generate all figures in the _figs/_ folder, and generate the variables `sr_change_whole`, `sr_change_reg`, `sr_change_time`, and `eco_ind_median` in the workspace.
+
+## Repository structure
+
+* _code_ : folder for R scripts
+  * _analysis.R_ : R script for main analysis
+  * _download_data.R_ : script to download raw data from Zenodo
+  * _helper_functions.R_ : utility functions for analysis
+* _data_ : folder for raw data. Initially empty, will be filled with data from Zenodo once _download_data.R_ is run
+* _figs_ : folder for figures. Initially empty, will be filled with figures ofter _analysis.R_ is run
+* _renv_ : folder for `renv` package
+* _.Rprofile_ : R session settings
+* _.gitignore_ : untracked files
+* _LICENSE_ : Apache 2.0 license text
+* _README.md_ : README file with instructions for reproducibility
+* _messinian_biol_impact.Rproj_ : RProject file
+* _renv.lock_ : lock file for `renv` package
 
 ## License
 
