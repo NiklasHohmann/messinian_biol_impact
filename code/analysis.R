@@ -16,6 +16,11 @@ messinian_db$Species.name = replace(messinian_db$Species.name, messinian_db$Spec
 messinian_db$Genus.name = replace(messinian_db$Genus.name, messinian_db$Genus.name == "indet.", NA)
 messinian_db = messinian_db[ !messinian_db$Family == "indet.",  ]
 
+#### Unique species names ####
+sp = paste0(messinian_db$Genus.name, messinian_db$Species.name)
+sp = sp[!is.na(messinian_db$Species.name) & ! is.na(messinian_db$Genus.name)]
+unique_species = length(unique(sp))
+
 #### Constants ####
 timebins <- unique(messinian_db$Age)[c(3, 1, 2)] # sorted from old to young
 regions <- unique(messinian_db$region.new)
