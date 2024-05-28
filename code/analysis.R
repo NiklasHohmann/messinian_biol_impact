@@ -75,6 +75,33 @@ for (ti in timebins){
   
 }
 
+#### East-west gradient in species richness ####
+cat("Determining east-west gradient in species richness")
+n = Inf
+for (time in timebins){
+  for (reg in regions[c(1,3)]){
+    n = min(length(get_from_db("all groups", reg, time)), n)
+  }
+}
+subsampleTo = ceiling(0.8 * n)
+grad_list = list()
+
+for (ti in timebins){
+  wMed = get_from_db("all groups", "Western Mediterranean", ti)
+  eMed = get_from_db("all groups", "Eastern Mediterranean", ti)
+  grad_list[[ti]] = rarefyTaxGradient(wMed, eMed, subsampleTo, noOfRep) #  determine west-east richness gradient
+}
+file_name = "figs/W-E gradient species richness.pdf"
+main = "West-East gradient in species richness"
+ylab = paste0("Gradient in species richness, subsamples to ", subsampleTo, " occurrences")
+pdf(file = file_name)
+boxplot(grad_list,
+        ylab = ylab,
+        main = main,
+        ylim = range(grad_list))
+dev.off()
+
+
 #### Species richness in the whole basin ####
 cat("Determining species richness in whole basin\n")
 # extract species names
