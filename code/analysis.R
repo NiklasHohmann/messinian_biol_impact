@@ -76,7 +76,7 @@ for (ti in timebins){
 }
 
 #### East-west gradient in species richness ####
-cat("Determining east-west gradient in species richness")
+cat("Determining east-west gradient in species richness\n")
 n = Inf
 for (time in timebins){
   for (reg in regions[c(1,3)]){

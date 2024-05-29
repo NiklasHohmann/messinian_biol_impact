@@ -34,13 +34,13 @@ renv::restore()
 in the console to install all dependencies required for the analysis. Next, run
 
 ```R
-source("code/download_data.R)
+source("code/download_data.R")
 ```
 
 do download the database from Zenodo. Then, run
 
 ```R
-source("code/analysis.R)
+source("code/analysis.R")
 ```
 
 to run the analysis and produce the figures. This will generate all figures in the _figs/_ folder, and generate the variables `sr_change_whole`, `sr_change_reg`, `sr_change_time`, and `eco_ind_median` in the workspace.
