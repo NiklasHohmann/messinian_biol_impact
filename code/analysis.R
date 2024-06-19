@@ -101,6 +101,9 @@ boxplot(grad_list,
         ylim = range(grad_list))
 dev.off()
 
+to_grad_test = wilcox.test(grad_list[["Tortonian"]], alternative = "less")
+mes_grad_test = wilcox.test(grad_list[["pre-evaporitic Messinian"]], alternative = "less")
+zan_grad_test = wilcox.test(grad_list[["Zanclean"]], alternative = "greater")
 
 #### Species richness in the whole basin ####
 cat("Determining species richness in whole basin\n")
@@ -128,6 +131,10 @@ boxplot(list( "Tortonian" = Tor_sr,
         ylab = ylab,
         main = main)
 dev.off()
+
+# test: diversity already decreased before the salinity crisis
+tor_mes_test = wilcox.test(Tor_sr, Mes_sr, alternative = "greater")
+mes_zan_test = wilcox.test(Mes_sr, Zan_sr, alternative = "less")
 
 
 #### Ecological indices ####
@@ -199,6 +206,13 @@ sr_change_whole = c("T vs. M" = 100 * (1- sr_median["Tor"]/sr_median["Mes"]),
                     "M vs. Z" = 100 * (1- sr_median["Mes"]/sr_median["Zan"]),
                     "T vs. Z" = 100 * (1- sr_median["Tor"]/sr_median["Zan"]))
 
+# IQR in change in species richness
+quantile(100 * (1-Tor_sr/Mes_sr))
+quantile(100 * (1-Mes_sr/Zan_sr))
+
+## IQR in soerensen index
+quantile(100 *TM[["soerensen"]])
+quantile(100 * MZ[["soerensen"]])
 # 
 # eco_ind_median
 
