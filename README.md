@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10817726.svg)](https://doi.org/10.5281/zenodo.10817726)
 
-Supplementary code for _The biodiversity impact of the Mediterranean salt giant_  
+Supplementary code for _The marine biodiversity impact of the Late Miocene Mediterranean salinity crisis_  
 Project webpage: [REMARE project](https://sites.google.com/view/kagiadi/projects/remare)
 
 ## Authors
@@ -43,7 +43,7 @@ do download the database from Zenodo. Then, run
 source("code/analysis.R")
 ```
 
-to run the analysis and produce the figures. This will generate all figures in the _figs/_ folder, and generate the variables `sr_change_whole`, `sr_change_reg`, `sr_change_time`, and `eco_ind_median` in the workspace.
+to run the analysis and produce the figures. This will generate all figures in the _figs/_ folder, and generate the variables `sr_change_whole`, `sr_change_reg`, `sr_change_time`, and `eco_ind_median` in the workspace. Instructions on how to generate the maps are in the file `code/maps.R`.
 
 ## Repository structure
 
@@ -51,8 +51,9 @@ to run the analysis and produce the figures. This will generate all figures in t
   * _analysis.R_ : R script for main analysis
   * _download_data.R_ : script to download raw data from Zenodo
   * _helper_functions.R_ : utility functions for analysis
+  * _maps.R_ : code to generate maps
 * _data_ : folder for raw data. Initially empty, will be filled with data from Zenodo once _download_data.R_ is run
-* _figs_ : folder for figures. Initially empty, will be filled with figures ofter _analysis.R_ is run
+* _figs_ : folder for figures. Initially empty, will be filled with figures ofter _analysis.R_ and/or _maps.R_ is run
 * _renv_ : folder for `renv` package
 * _.Rprofile_ : R session settings
 * _.gitignore_ : untracked files
