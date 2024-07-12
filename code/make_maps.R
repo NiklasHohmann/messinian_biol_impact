@@ -19,28 +19,28 @@ Med_map<-get_stadiamap(bbox,maptype="stamen_toner_background",zoom=5)
 ggmap(Med_map)
 
 # Read locality data
-coord<-read.csv("data/coord.csv")
+coord<-read.csv("coord.csv")
 class(coord)
 
 # Whole dataset map
 qmplot(lon,lat,data=coord,maptype="stamen_toner_lite",color=I("red"))
 # OR
 ggmap(Med_map)+geom_point(data=coord,aes(color="darkred",shape=Age))
-ggsave("figs/dataset_map.pdf",width=9,height=5) 
+ggsave("dataset_map.pdf",width=9,height=5) 
 
 # Color by stage
 Tortonian<-filter(coord,Age=="Tortonian")
 Messinian<-filter(coord,Age=="pre-evaporitic Messinian")
 Zanclean<-filter(coord,Age=="Zanclean")
 ggmap(Med_map)+geom_point(data=Tortonian,color="darkblue")+geom_point(data=Messinian,color="darkred")+geom_point(data=Zanclean,color="gold2")
-ggsave("figs/locs_by_stage_map.pdf",width=9,height=5)
+ggsave("locs_by_stage_map.pdf",width=9,height=5)
 
 # Color by region
 wMed<-filter(coord,region=="Western Mediterranean")
 eMed<-filter(coord,region=="Eastern Mediterranean")
 PoA<-filter(coord,region=="Po Plain-Northern Adriatic")
 ggmap(Med_map)+geom_point(data=wMed,color="green4")+geom_point(data=eMed,color="pink4")+geom_point(data=PoA,color="orange3")
-ggsave("figs/locs_by_region_map.pdf",width=9,height=5)
+ggsave("locs_by_region_map.pdf",width=9,height=5)
 
 # Color by stage and region
 ggmap(Med_map)+
@@ -50,7 +50,7 @@ ggmap(Med_map)+
   labs(x="longitude",y="latitude")+
   theme(legend.position="bottom")
 
-ggsave("figs/stage_region_map2.pdf",width=9,height=5)
+ggsave("stage_region_map2.pdf",width=9,height=5)
 
 # plot for each group separately
 tax_groups<-unique(coord$group.name)
@@ -70,46 +70,46 @@ bryo<-filter(coord,group.name=="bryozoans")
 othermolluscs<-filter(coord, group.name=="scaphopod_chitons_cephalopods")
 
 ggmap(Med_map)+geom_point(data=pforams,aes(color=Age))
-ggsave("figs/pforams.pdf",width=9,height=5)
+ggsave("pforams.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=nano,aes(color=Age))
-ggsave("figs/nano.pdf",width=9,height=5)
+ggsave("nano.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=ostracods,aes(color=Age))
-ggsave("figs/ostracods.pdf",width=9,height=5)
+ggsave("ostracods.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=bforams,aes(color=Age))
-ggsave("figs/bforams.pdf",width=9,height=5)
+ggsave("bforams.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=gastr,aes(color=Age))
-ggsave("figs/gastro.pdf",width=9,height=5)
+ggsave("gastro.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=echinoids,aes(color=Age))
-ggsave("figs/echinoids.pdf",width=9,height=5)
+ggsave("echinoids.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=fish,aes(color=Age))
-ggsave("figs/fish.pdf",width=9,height=5)
+ggsave("fish.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=mmammals,aes(color=Age))
-ggsave("figs/marine_mammals.pdf",width=9,height=5)
+ggsave("marine_mammals.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=biv,aes(color=Age))
-ggsave("figs/bivalves.pdf",width=9,height=5)
+ggsave("bivalves.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=corals,aes(color=Age))
-ggsave("figs/corals.pdf",width=9,height=5)
+ggsave("corals.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=dino,aes(color=Age))
-ggsave("figs/dino.pdf",width=9,height=5)
+ggsave("dino.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=sharks,aes(color=Age))
-ggsave("figs/sharks.pdf",width=9,height=5)
+ggsave("sharks.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=bryo,aes(color=Age))
-ggsave("figs/bryo.pdf",width=9,height=5)
+ggsave("bryo.pdf",width=9,height=5)
 
 ggmap(Med_map)+geom_point(data=othermolluscs,aes(color=Age))
-ggsave("figs/othermolluscs.pdf",width=9,height=5)
+ggsave("othermolluscs.pdf",width=9,height=5)
 
 # plot groups split into plankton, benthos, necton and large marine vertebrates
 # plankton: planktic_foraminifera, nanoplankton, dinocysts
@@ -122,4 +122,4 @@ necton<-rbind(fish)
 large_mar_vert<-rbind(sharks,mmammals)
 
 ggmap(Med_map)+geom_point(data=plankton,color="gold1",aes(shape=Age))+geom_point(data=benthos,color="red",aes(shape=Age))+geom_point(data=necton,color="blue",aes(shape=Age))+geom_point(data=large_mar_vert,color="green",aes(shape=Age))
-ggsave("figs/fgroups.pdf",width=9,height=5)
+ggsave("fgroups.pdf",width=9,height=5)
